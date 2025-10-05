@@ -1,0 +1,328 @@
+import React, { useState } from 'react';
+import { 
+  Folder, 
+  FileCode, 
+  ChevronRight, 
+  ChevronDown, 
+  CheckCircle,
+  Circle
+} from 'lucide-react';
+
+export default function ProjectStructure() {
+  const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set(['root', 'app', 'lib', 'prisma']));
+  const [completedFiles, setCompletedFiles] = useState<Set<string>>(new Set());
+
+  const toggleFolder = (path: string) => {
+    const newExpanded = new Set(expandedFolders);
+    if (newExpanded.has(path)) {
+      newExpanded.delete(path);
+    } else {
+      newExpanded.add(path);
+    }
+    setExpandedFolders(newExpanded);
+  };
+
+  const toggleFile = (path: string) => {
+    const newCompleted = new Set(completedFiles);
+    if (newCompleted.has(path)) {
+      newCompleted.delete(path);
+    } else {
+      newCompleted.add(path);
+    }
+    setCompletedFiles(newCompleted);
+  };
+
+  const structure = [
+    {
+      name: 'app',
+      type: 'folder',
+      path: 'app',
+      children: [
+        { name: 'page.tsx', type: 'file', path: 'app/page.tsx', description: 'Landing page' },
+        { name: 'layout.tsx', type: 'file', path: 'app/layout.tsx', description: 'Root layout' },
+        { name: 'globals.css', type: 'file', path: 'app/globals.css', description: 'Global styles' },
+        {
+          name: 'signup',
+          type: 'folder',
+          path: 'app/signup',
+          children: [
+            { name: 'page.tsx', type: 'file', path: 'app/signup/page.tsx', description: 'Sign up page' },
+          ],
+        },
+        {
+          name: 'signin',
+          type: 'folder',
+          path: 'app/signin',
+          children: [
+            { name: 'page.tsx', type: 'file', path: 'app/signin/page.tsx', description: 'Sign in page' },
+          ],
+        },
+        {
+          name: 'verify',
+          type: 'folder',
+          path: 'app/verify',
+          children: [
+            { name: 'page.tsx', type: 'file', path: 'app/verify/page.tsx', description: 'Email verification' },
+          ],
+        },
+        {
+          name: 'dashboard',
+          type: 'folder',
+          path: 'app/dashboard',
+          children: [
+            { name: 'page.tsx', type: 'file', path: 'app/dashboard/page.tsx', description: 'User dashboard' },
+          ],
+        },
+        {
+          name: 'admin',
+          type: 'folder',
+          path: 'app/admin',
+          children: [
+            { name: 'page.tsx', type: 'file', path: 'app/admin/page.tsx', description: 'Admin panel' },
+          ],
+        },
+        {
+          name: 'api',
+          type: 'folder',
+          path: 'app/api',
+          children: [
+            {
+              name: 'auth',
+              type: 'folder',
+              path: 'app/api/auth',
+              children: [
+                { name: 'signup/route.ts', type: 'file', path: 'app/api/auth/signup/route.ts', description: 'Sign up API' },
+                { name: 'signin/route.ts', type: 'file', path: 'app/api/auth/signin/route.ts', description: 'Sign in API' },
+                { name: 'verify/route.ts', type: 'file', path: 'app/api/auth/verify/route.ts', description: 'Verify code API' },
+                { name: 'resend-code/route.ts', type: 'file', path: 'app/api/auth/resend-code/route.ts', description: 'Resend code API' },
+              ],
+            },
+            {
+              name: 'user',
+              type: 'folder',
+              path: 'app/api/user',
+              children: [
+                { name: 'balance/route.ts', type: 'file', path: 'app/api/user/balance/route.ts', description: 'Get balance API' },
+                { name: 'deposit/route.ts', type: 'file', path: 'app/api/user/deposit/route.ts', description: 'Deposit API' },
+                { name: 'withdraw/route.ts', type: 'file', path: 'app/api/user/withdraw/route.ts', description: 'Withdraw API' },
+                { name: 'transactions/route.ts', type: 'file', path: 'app/api/user/transactions/route.ts', description: 'Get transactions API' },
+              ],
+            },
+            {
+              name: 'admin',
+              type: 'folder',
+              path: 'app/api/admin',
+              children: [
+                { name: 'users/route.ts', type: 'file', path: 'app/api/admin/users/route.ts', description: 'Get users API' },
+                { name: 'users/[id]/balance/route.ts', type: 'file', path: 'app/api/admin/users/[id]/balance/route.ts', description: 'Update balance API' },
+                { name: 'transactions/route.ts', type: 'file', path: 'app/api/admin/transactions/route.ts', description: 'Get transactions API' },
+                { name: 'transactions/[id]/approve/route.ts', type: 'file', path: 'app/api/admin/transactions/[id]/approve/route.ts', description: 'Approve transaction' },
+                { name: 'transactions/[id]/reject/route.ts', type: 'file', path: 'app/api/admin/transactions/[id]/reject/route.ts', description: 'Reject transaction' },
+                { name: 'wallets/route.ts', type: 'file', path: 'app/api/admin/wallets/route.ts', description: 'Wallet management API' },
+                { name: 'init/route.ts', type: 'file', path: 'app/api/admin/init/route.ts', description: 'Initialize admin' },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'lib',
+      type: 'folder',
+      path: 'lib',
+      children: [
+        { name: 'db.ts', type: 'file', path: 'lib/db.ts', description: 'Prisma client' },
+        { name: 'resend.ts', type: 'file', path: 'lib/resend.ts', description: 'Email functions' },
+        { name: 'utils.ts', type: 'file', path: 'lib/utils.ts', description: 'Utility functions' },
+      ],
+    },
+    {
+      name: 'prisma',
+      type: 'folder',
+      path: 'prisma',
+      children: [
+        { name: 'schema.prisma', type: 'file', path: 'prisma/schema.prisma', description: 'Database schema' },
+      ],
+    },
+    { name: 'package.json', type: 'file', path: 'package.json', description: 'Dependencies' },
+    { name: 'tsconfig.json', type: 'file', path: 'tsconfig.json', description: 'TypeScript config' },
+    { name: 'next.config.js', type: 'file', path: 'next.config.js', description: 'Next.js config' },
+    { name: 'tailwind.config.ts', type: 'file', path: 'tailwind.config.ts', description: 'Tailwind config' },
+    { name: 'postcss.config.js', type: 'file', path: 'postcss.config.js', description: 'PostCSS config' },
+    { name: '.env.example', type: 'file', path: '.env.example', description: 'Environment variables template' },
+    { name: '.gitignore', type: 'file', path: '.gitignore', description: 'Git ignore file' },
+    { name: 'vercel.json', type: 'file', path: 'vercel.json', description: 'Vercel config' },
+    { name: 'README.md', type: 'file', path: 'README.md', description: 'Deployment guide' },
+  ];
+
+  const renderItem = (item: any, level: number = 0) => {
+    const isExpanded = expandedFolders.has(item.path);
+    const isCompleted = completedFiles.has(item.path);
+    const paddingLeft = `${level * 20}px`;
+
+    if (item.type === 'folder') {
+      return (
+        <div key={item.path}>
+          <div
+            className="flex items-center gap-2 py-2 px-3 hover:bg-white/10 cursor-pointer rounded-lg transition"
+            style={{ paddingLeft }}
+            onClick={() => toggleFolder(item.path)}
+          >
+            {isExpanded ? (
+              <ChevronDown className="w-4 h-4 text-blue-400" />
+            ) : (
+              <ChevronRight className="w-4 h-4 text-blue-400" />
+            )}
+            <Folder className="w-5 h-5 text-yellow-400" />
+            <span className="text-white font-semibold">{item.name}</span>
+          </div>
+          {isExpanded && item.children && (
+            <div>
+              {item.children.map((child: any) => renderItem(child, level + 1))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <div
+        key={item.path}
+        className="flex items-center gap-2 py-2 px-3 hover:bg-white/10 cursor-pointer rounded-lg transition group"
+        style={{ paddingLeft }}
+        onClick={() => toggleFile(item.path)}
+      >
+        <div className="w-4 h-4 flex items-center justify-center">
+          {isCompleted ? (
+            <CheckCircle className="w-4 h-4 text-green-400" />
+          ) : (
+            <Circle className="w-4 h-4 text-gray-500 group-hover:text-gray-400" />
+          )}
+        </div>
+        <FileCode className="w-5 h-5 text-blue-400" />
+        <div className="flex-1">
+          <span className={`text-white ${isCompleted ? 'line-through opacity-60' : ''}`}>
+            {item.name}
+          </span>
+          {item.description && (
+            <span className="text-gray-400 text-xs ml-2">- {item.description}</span>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const countFiles = (node: any): number => {
+    if (node.type === 'file') return 1;
+    if (node.children) {
+      return node.children.reduce((sum: number, child: any) => sum + countFiles(child), 0);
+    }
+    return 0;
+  };
+
+  const totalFiles = structure.reduce((count, item) => count + countFiles(item), 0);
+
+  const completedCount = completedFiles.size;
+  const progress = (completedCount / totalFiles) * 100;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-8">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            CryptoSphere Broker
+          </h1>
+          <p className="text-xl text-gray-300 mb-4">Complete Project Structure</p>
+          
+          {/* Progress Bar */}
+          <div className="max-w-md mx-auto">
+            <div className="flex justify-between text-sm mb-2">
+              <span className="text-gray-400">Progress</span>
+              <span className="text-blue-400 font-semibold">
+                {completedCount} / {totalFiles} files
+              </span>
+            </div>
+            <div className="bg-gray-700 rounded-full h-3 overflow-hidden">
+              <div
+                className="bg-gradient-to-r from-blue-500 to-purple-600 h-full transition-all duration-500"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold">File Structure</h2>
+            <div className="flex gap-4 text-sm">
+              <div className="flex items-center gap-2">
+                <Circle className="w-4 h-4 text-gray-500" />
+                <span className="text-gray-400">To Do</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-400" />
+                <span className="text-gray-400">Completed</span>
+              </div>
+            </div>
+          </div>
+          <p className="text-gray-400 text-sm mb-4">
+            Click on files to mark them as completed. Click folders to expand/collapse.
+          </p>
+          <div className="bg-black/30 rounded-lg p-4 max-h-[600px] overflow-y-auto">
+            {structure.map((item) => renderItem(item))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6">
+            <h3 className="text-xl font-bold mb-4">🚀 Quick Start</h3>
+            <ol className="space-y-2 text-sm">
+              <li>1. Copy all code files to your project</li>
+              <li>2. Run <code className="bg-black/30 px-2 py-1 rounded">npm install</code></li>
+              <li>3. Setup database with Prisma</li>
+              <li>4. Configure environment variables</li>
+              <li>5. Deploy to Vercel!</li>
+            </ol>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-6">
+            <h3 className="text-xl font-bold mb-4">✨ Features</h3>
+            <ul className="space-y-2 text-sm">
+              <li>✅ Real email verification with Resend</li>
+              <li>✅ Secure authentication</li>
+              <li>✅ User & Admin dashboards</li>
+              <li>✅ Deposit & Withdrawal system</li>
+              <li>✅ QR code generation</li>
+              <li>✅ Transaction management</li>
+              <li>✅ Vercel deployment ready</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl p-6 text-center">
+          <h3 className="text-2xl font-bold mb-2">🎉 All Code Files Provided!</h3>
+          <p className="text-lg mb-4">
+            I've created all {totalFiles} files needed for your complete crypto broker platform.
+          </p>
+          <p className="text-sm opacity-90">
+            Copy each code block from the artifacts above, follow the deployment guide, and you'll have a production-ready app!
+          </p>
+        </div>
+
+        <div className="mt-8 bg-yellow-500/20 border border-yellow-500 rounded-xl p-6">
+          <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+            ⚠️ Important Next Steps
+          </h3>
+          <ul className="space-y-2 text-sm">
+            <li>• Create a <strong>Resend</strong> account and get your API key</li>
+            <li>• Setup a <strong>PostgreSQL</strong> database (Vercel Postgres, Supabase, or Neon)</li>
+            <li>• Update the <code className="bg-black/30 px-2 py-1 rounded">from</code> email in lib/resend.ts</li>
+            <li>• Generate a secure <code className="bg-black/30 px-2 py-1 rounded">NEXTAUTH_SECRET</code></li>
+            <li>• Initialize admin account by calling <code className="bg-black/30 px-2 py-1 rounded">/api/admin/init</code></li>
+            <li>• Configure wallet addresses in the admin panel</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}
